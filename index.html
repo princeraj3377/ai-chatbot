@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Chat</title>
+ <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #userInput {
+            width: 80%;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+        }
+        #response {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #010101;
+            background-color: #f9f9f9;
+        }
+    </style>   
+</head>
+<body>
+
+
+<h2>AI Assistant 🤖</h2>
+
+<input id="userInput" placeholder="Type message">
+<button onclick="sendMessage()">Send</button>
+
+<p id="response"></p>
+
+<script>
+async function sendMessage() {
+    const message = document.getElementById("userInput").value;
+
+    console.log("Sending:", message);
+
+    try {
+        const res = await fetch("http://127.0.0.1:5000/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message: message })
+        });
+
+        const data = await res.json();
+
+        console.log("Response:", data);
+
+        document.getElementById("response").innerText = data.reply;
+
+    } catch (error) {
+        console.error("Error:", error);
+        document.getElementById("response").innerText = "Error connecting to server";
+    }
+}
+</script>
+
+</body>
+</html>
